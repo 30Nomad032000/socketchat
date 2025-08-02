@@ -314,7 +314,7 @@ export default function TextChat() {
   useEffect(() => {
     const start = async () => {
       // Connect to your local Express Socket.IO server
-      socket = io("http://localhost:3000");
+      socket = io("https://socketchat-dun.vercel.app/");
 
       socket.on("connect", () => {
         setIsConnected(true);

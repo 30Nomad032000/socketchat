@@ -1,5 +1,5 @@
 import express from "express";
-import http from "http";
+import { createServer } from "http";
 import { Server } from "socket.io";
 
 const app = express();
@@ -14,12 +14,23 @@ app.get("/", (req, res) => {
   res.json({ message: "Socket.IO server is running!" });
 });
 
-// Create HTTP server
-const httpServer = http.createServer(app);
+// Health check for Vercel
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
 
-// Create Socket.IO server
+// Create HTTP server
+const httpServer = createServer(app);
+
+// Create Socket.IO server with Vercel-compatible settings
 const io = new Server(httpServer, {
-  cors: { origin: "*" },
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+  transports: ["websocket", "polling"],
+  allowEIO3: true,
 });
 
 // Track users in each room
@@ -124,8 +135,13 @@ io.on("connection", (socket) => {
   });
 });
 
-// Start server
-httpServer.listen(PORT, () => {
-  console.log(`> Server ready at http://localhost:${PORT}`);
-  console.log(`> Socket.IO server is running`);
-});
+// Start server (only if not in Vercel environment)
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  httpServer.listen(PORT, () => {
+    console.log(`> Server ready at http://localhost:${PORT}`);
+    console.log(`> Socket.IO server is running`);
+  });
+}
+
+// Export for Vercel
+export default app;
