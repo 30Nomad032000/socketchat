@@ -673,7 +673,9 @@ export default function TextChat() {
             <div className="text-xs text-blue-400 font-mono mb-1">
               {text.username}
             </div>
-            <p className="text-white font-medium text-lg">"{text.text}"</p>
+            <p className="text-white font-medium text-lg">
+              &ldquo;{text.text}&rdquo;
+            </p>
           </div>
         </div>
       ))}
