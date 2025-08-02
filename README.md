@@ -84,7 +84,7 @@ npm run dev
 ## Screenshots
 
 ![Main Chat Interface](Add screenshot of the main chat interface here)
-_The main chat interface showing the gradient background, connection status, and live typing area_
+
 
 ![Live Typing Demo](Add screenshot showing live typing with random fonts here)
 _Live typing demonstration with text appearing in random fonts, sizes, and colors across the screen_
